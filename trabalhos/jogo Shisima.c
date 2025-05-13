@@ -4,7 +4,8 @@ typedef struct jogador {
     int posicao1,posicao2,posicao3;
 } jogador;
 
-void imprimir_tabuleriro(jogador player[]){
+void imprimir_tabuleriro(jogador player[],int jogada){
+    if (jogada!=0) printf("****************** Jogada Nº %d*********************\n",jogada);
     for (int i = 1; i < 10; i++) {
         int jogador_em_posicao = -1;  
         for (int j = 0; j < 2; j++) {
@@ -24,7 +25,22 @@ void imprimir_tabuleriro(jogador player[]){
             printf("\n");
         }
     }
+    //printf("************************************************\n");
     return;
+}
+
+int ha_vencedor(jogador player[]){
+    int vencedor = 0;
+    if(player[0].posicao1==1 && player[0].posicao2==2 && player[0].posicao3==3){
+        vencedor = 1;
+    } else if(player[0].posicao1==3 && player[0].posicao2==2 && player[0].posicao3==1){
+        vencedor = 1;
+    } else if(player[1].posicao1==7 && player[1].posicao2==8 && player[1].posicao3==9){
+        vencedor = 2;
+    } else if(player[1].posicao1==9 && player[1].posicao2==8 && player[1].posicao3==7){
+        vencedor = 2;
+    }
+    return vencedor;
 }
 
 int main(){
@@ -37,7 +53,31 @@ int main(){
     player[1].posicao2=2;
     player[1].posicao3=3;
 
-    imprimir_tabuleriro(player);
+    int jogadas = 0;
+
+    imprimir_tabuleriro(player,jogadas);
+
+    int vencedor = 0;
+    int jogador_atual = 1;
+    jogadas++;
+    do{
+        //debug
+        if(jogador_atual==2){
+            player[1].posicao1=9;
+            player[1].posicao2=5;
+            player[1].posicao3=4;
+
+            player[0].posicao1=1;
+            player[0].posicao2=2;
+            player[0].posicao3=3;
+        }
+        imprimir_tabuleriro(player,jogadas);
+        jogador_atual = jogador_atual==1 ? 2 : 1;
+        vencedor = ha_vencedor(player);
+        jogadas++;
+    } while(vencedor==0 && jogadas<=30);
+
+    printf("O vencedor foi o jogador %d",vencedor);
 }
 
 
